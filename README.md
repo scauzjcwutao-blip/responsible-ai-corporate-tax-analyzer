@@ -134,3 +134,34 @@ cd tax-law-database
 pip install -r requirements.txt
 python src/main.py
 ```
+## 📡 API Usage
+```bash
+# Get current version of §8c KStG
+GET /api/v1/current/KStG/8c
+
+# Get historical version for assessment period 2016
+GET /api/v1/historical/KStG/8c?vz=2016
+
+# Get synopsis comparison between two assessment periods
+GET /api/v1/compare/KStG/8c?from_vz=2015&to_vz=2024
+
+# Get trade tax rate for a specific municipality
+GET /api/v1/rates/trade_tax?municipality=Frankfurt&year=2024
+
+# Run tax rate prediction scenario
+POST /api/v1/predict/corporate_tax
+{
+  "horizon": 5,
+  "scenario": "base_case",
+  "gdp_growth": 1.2,
+  "debt_ratio": 65.0
+}
+
+# Calculate combined tax burden
+POST /api/v1/calculate/combined
+{
+  "taxable_income": 1000000,
+  "municipality": "München",
+  "vz": 2024
+}
+```
