@@ -1,4 +1,3 @@
-# responsible-ai-corporate-tax-analyzer
 # Responsible AI Corporate Tax Analyzer
 
 **A transparent and explainable AI pipeline for corporate tax analysis and compliance risk assessment.**
