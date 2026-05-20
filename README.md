@@ -49,33 +49,88 @@ Corporate tax compliance and planning involve complex, jurisdiction-specific rul
 ```bash
 Structure
 responsible-ai-corporate-tax-analyzer/
-├── src/
-│   ├── tax_models.py         
-│   ├── rag_tax_law.py        
-│   ├── shap_explainer.py    
-│   └── utils.py
-├── notebooks/
-│   └── demo_corporate_tax.ipynb 
-├── data/
-│   ├── synthetic_corporate_financials.csv   # 合成公司数据（含税前利润、扣除项等）
-│   └── tax_rules_sample.json                # 公司税法规则示例（可替换为瑞士/欧盟/中国税法）
-├── requirements.txt
-├── README.md
-└── LICENSE (MIT)
+tax_law_database/
+├── manifest.json                        ← Main manifest (all version indexes + checksums)
+├── src/                                 ← Source code
+│   ├── main.py                          ← Application entry point
+│   ├── config.py                        ← Configuration & environment variables
+│   ├── prediction/                      ← Module 1: Tax rate prediction (ML)
+│   │   ├── model.py
+│   │   ├── features.py
+│   │   ├── train.py
+│   │   └── scenarios.py
+│   ├── versioning/                      ← Module 2: Temporal law versioning
+│   │   ├── timeline.py
+│   │   ├── resolver.py
+│   │   └── diff.py
+│   ├── application/                     ← Module 3: Intelligent law application
+│   │   ├── rules_engine.py
+│   │   ├── loss_deduction.py            ← §8c KStG logic
+│   │   ├── interest_barrier.py          ← §4h EStG / §8a KStG
+│   │   ├── trade_tax.py                 ← GewSt additions & deductions
+│   │   └── reorganization.py            ← UmwStG logic
+│   ├── rates/                           ← Module 4: Tax rate database
+│   │   ├── scraper.py
+│   │   ├── municipality.py
+│   │   └── property_tax.py
+│   ├── sync/                            ← Module 5: Change detection & delta sync
+│   │   ├── monitor.py
+│   │   ├── bgbl_fetcher.py
+│   │   ├── bmf_fetcher.py
+│   │   └── notifications.py
+│   ├── comparison/                      ← Module 6: Synopsis & version comparison
+│   │   ├── synopsis.py
+│   │   ├── diff_renderer.py
+│   │   └── changelog.py
+│   ├── export/                          ← Module 7: Download & export
+│   │   ├── json_export.py
+│   │   ├── csv_export.py
+│   │   ├── markdown_export.py
+│   │   ├── zip_builder.py
+│   │   └── checksum.py                  ← SHA-256 integrity
+│   ├── calculation/                     ← Module 8: Tax calculation & planning
+│   │   ├── corporate_tax.py
+│   │   ├── trade_tax_calc.py
+│   │   ├── combined_burden.py
+│   │   └── scenario_runner.py
+│   ├── api/                             ← REST API layer
+│   │   ├── routes.py
+│   │   ├── schemas.py
+│   │   └── middleware.py
+│   └── utils/                           ← Shared utilities
+│       ├── logger.py
+│       ├── validators.py
+│       └── constants.py
+├── current/                             ← Latest version of all provisions
+│   ├── KStG_P8c.json
+│   ├── EStG_P7g.json
+│   ├── GewStG_P8_Nr._1.json
+│   └── ...
+├── historical/                          ← Historical versions
+│   ├── VZ_2015/                         ← 2015 assessment period snapshot
+│   │   ├── KStG_P8c.json
+│   │   └── ...
+│   ├── VZ_2020/
+│   │   └── ...
+│   └── KStG_P8c/                        ← §8c complete history
+│       ├── KStG_P8c_v1_2008.json
+│       ├── KStG_P8c_v2_bverfg_2017.json
+│       └── KStG_P8c_v3_2018.json
+├── tax_rates/
+│   ├── tax_rates_2023.json
+│   └── tax_rates_2024.json
+└── export/
+    └── VZ_2023/
+        ├── tax_law_VZ2023.json          ← Machine-readable
+        ├── tax_law_VZ2023.csv           ← Excel-compatible
+        ├── tax_law_VZ2023.md            ← Human-readable
+        └── tax_law_VZ2023_complete.zip  ← Full package
 ```
 ## 🚀 Quick Start
 
 ```bash
-# 1. Clone the repository
-git clone https://github.com/scauzjcwutao-blip/responsible-ai-corporate-tax-analyzer.git
-cd responsible-ai-corporate-tax-analyzer
-
-# 2. Create and activate environment
-conda create -n tax-ai python=3.11 -y
-conda activate tax-ai
-
-# 3. Install dependencies
+git clone https://github.com/your-repo/tax-law-database.git
+cd tax-law-database
 pip install -r requirements.txt
-
-# 4. Run the demo
-jupyter notebook notebooks/demo_corporate_tax.ipynb
+python src/main.py
+```
