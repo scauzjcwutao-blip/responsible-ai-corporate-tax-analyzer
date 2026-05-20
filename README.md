@@ -27,9 +27,66 @@ The project directly aligns with the principles of the ETH Zürich SNSF project 
 
 - **Interactive Demo Notebook**  
   One-click execution with synthetic and real-world corporate financial data.
+---
+## 🇩🇪 German Corporate Tax AI System – Live Demo
+
+**Responsible AI for Corporate Taxation**  
+A production-ready, explainable AI system that combines **machine learning prediction**, **SHAP interpretability**, and **Retrieval-Augmented Generation (RAG)** for German corporate tax law.
+
+This demo showcases the full pipeline: from synthetic data modeling to transparent predictions and automatic legal grounding.
 
 ---
 
+### 📊 1. Synthetic Data & Model Training
+```bash
+Generating synthetic German corporate tax data...
+Training set: 400 samples | Test set: 100 samples
+Features: 22 | Target: effective_tax_rate (mean = 0.2892, std = 0.0312)
+```
+Training XGBoost model...
+→ MAE: 0.0043 (0.43 percentage points)
+→ R²:  0.9512
+```
+📋 2. Prediction Examplesbash
+Prediction breakdown (first 5 test samples):
+
+Unternehmen 42   → statutory 30.18% | predicted 27.85% | deviation -2.33 pp
+Unternehmen 107  → statutory 29.37% | predicted 29.01% | deviation -0.36 pp
+...
+```
+🔍 3. Explainability with SHAP
+Computing SHAP explanations...
+Top 10 features by mean |SHAP| value:
+
+1. hebesatz                → 0.012453
+2. beteiligungsertraege    → 0.008721
+3. verlustvortraege        → 0.007234
+4. organschaft             → 0.005102
+5. zinsaufwand             → 0.003891
+6. mieten_pachten          → 0.003204
+...
+```
+📚  4. Tax Law Retrieval (RAG)
+✅ 12 German tax provisions loaded into vector database
+
+❓ Query: Wie werden Beteiligungserträge bei der Körperschaftsteuer behandelt?
+   📖 §8b Abs. 1 KStG – Freistellung von Beteiligungserträgen (Relevance: 0.891)
+
+❓ Query: Wann gehen Verlustvorträge bei Anteilsübertragung unter?
+   📖 §8c Abs. 1 KStG – Verlustabzug bei Körperschaften (Relevance: 0.856)
+
+❓ Query: Welche Hinzurechnungen gibt es bei der Gewerbesteuer?
+   📖 §8 Nr. 1 GewStG – Hinzurechnungen (Relevance: 0.912)
+ ```
+🔗 COMBINED: SHAP finding → automatic law lookup
+Top SHAP feature: 'hebesatz'
+```bash
+→ Automatic legal lookup triggered...
+   📖 §11 Abs. 1-3 GewStG – Steuermesszahl und Hebesatz
+   📝 "Die Gewerbesteuer wird auf der Grundlage des Steuermessbetrags festgesetzt..."
+```
+✅ Demo complete.
+```
 ## 🎯 Motivation
 
 Corporate tax compliance and planning involve complex, jurisdiction-specific rules. Traditional manual review is time-consuming and prone to inconsistency. This project demonstrates how **Responsible AI** can support tax authorities, companies, and legal professionals by providing transparent, auditable, and explainable tax analysis — particularly relevant for Swiss and EU corporate tax regimes.
